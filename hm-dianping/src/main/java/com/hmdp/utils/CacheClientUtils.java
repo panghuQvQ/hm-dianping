@@ -185,6 +185,7 @@ public class CacheClientUtils {
     }
 
     private boolean tryLock(String key) {
+        // setIfAbsent 如果 redis 中有 key 则返回false 如果没有则 true
         Boolean flag = stringRedisTemplate.opsForValue().setIfAbsent(key, "1", 10, TimeUnit.SECONDS);
         return BooleanUtil.isTrue(flag);
     }
