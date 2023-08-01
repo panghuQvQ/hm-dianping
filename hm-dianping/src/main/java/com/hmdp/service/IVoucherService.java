@@ -5,12 +5,11 @@ import com.hmdp.dto.Result;
 import com.hmdp.entity.Voucher;
 
 /**
- * <p>
- *  服务类
- * </p>
- *
- * @author 虎哥
- * @since 2021-12-22
+ * @title 服务类
+ * @description
+ * @author wzy
+ * @updateTime 2023/2/24 15:35
+ * @throws
  */
 public interface IVoucherService extends IService<Voucher> {
 
