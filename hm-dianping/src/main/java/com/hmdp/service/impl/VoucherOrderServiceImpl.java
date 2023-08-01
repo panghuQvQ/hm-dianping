@@ -169,6 +169,12 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
         }
     }*/
 
+    /**
+     * 事务提交前释放锁，会锁不住。所以需要先提交事务，后释放锁
+     * 锁用户，从常量池中获取，保证只锁多次请求的同一用户，提高性能
+     * 即：同一用户串行，不同用户并行
+     * @param voucherOrder
+     */
     private void handlerVoucherOrder(VoucherOrder voucherOrder) {
         // 1.获取用户
         Long userId = voucherOrder.getUserId();
@@ -213,7 +219,7 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
             return Result.fail(re == 1 ? "库存不足" : "不能重复下单");
         }
 
-        // 3. 获取代理对象(事务)
+        // 3. 非事务方法A调用事务方法B，会导致事务失效，可以采用此方式，获取代理对象
         proxy = (IVoucherOrderService) AopContext.currentProxy();
 
         // 4.返回订单id
