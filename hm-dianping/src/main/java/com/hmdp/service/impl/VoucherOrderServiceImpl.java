@@ -87,7 +87,7 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
                     List<MapRecord<String, Object, Object>> list = stringRedisTemplate.opsForStream().read(
                             Consumer.from("consumerGroup", consumer),
                             StreamReadOptions.empty().count(1).block(Duration.ofSeconds(2)),
-                            StreamOffset.create(queueName, ReadOffset.lastConsumed())
+                            StreamOffset.create(queueName, ReadOffset.lastConsumed()) // > 从下一个未消费的消息开始
                     );
                     // 2.判断消息获取是否成功
                     if(CollectionUtil.isEmpty(list)){
@@ -119,7 +119,7 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
                     List<MapRecord<String, Object, Object>> list = stringRedisTemplate.opsForStream().read(
                             Consumer.from("consumerGroup", consumer),
                             StreamReadOptions.empty().count(1),
-                            StreamOffset.create(queueName, ReadOffset.from("0"))
+                            StreamOffset.create(queueName, ReadOffset.from("0")) // 0：从pending-list中的第一个已消费但未确认的消息开始
                     );
                     // 2.判断消息获取是否成功
                     if(CollectionUtil.isEmpty(list)){
