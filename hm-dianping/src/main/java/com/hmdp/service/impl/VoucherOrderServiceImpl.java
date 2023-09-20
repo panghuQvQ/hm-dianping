@@ -219,7 +219,8 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
             return Result.fail(re == 1 ? "库存不足" : "不能重复下单");
         }
 
-        // 3. 非事务方法A调用事务方法B，会导致事务失效，可以采用此方式，获取代理对象
+        // 3. 非事务方法A调用事务方法B，会导致事务失效，可以采用此方式，获取当前对象的代理对象代理对象
+        // @EnableAspectJAutoProxy(exposeProxy = true) // 暴露代理对象
         proxy = (IVoucherOrderService) AopContext.currentProxy();
 
         // 4.返回订单id
