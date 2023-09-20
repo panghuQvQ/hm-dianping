@@ -48,6 +48,7 @@ public class RedisIdWorker {
         long count = stringRedisTemplate.opsForValue().increment("icr:" + keyPrefix + ":" + date);
 
         // 3.拼接并返回：时间戳向左移动32位   剩下的32位：或运算  自增长数据填充
+        // 数据转换成二进制数后，向左移若干位，高位丢弃，低位补零
         return timestamp << COUNT_BITS | count;
     }
 
@@ -61,5 +62,8 @@ public class RedisIdWorker {
         // 获取秒数(时区偏移量) 1970-01-01T00:00:00Z
         long second = time.toEpochSecond(ZoneOffset.UTC);
         System.out.println("second=" + second);
+
+//        int i = 10 << 5;
+//        System.out.println(i);
     }
 }
