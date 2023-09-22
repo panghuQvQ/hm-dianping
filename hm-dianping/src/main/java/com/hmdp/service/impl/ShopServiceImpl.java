@@ -99,7 +99,7 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop> implements IS
                 .search(key,
                         GeoReference.fromCoordinate(x, y),
                         new Distance(5000), // 默认单位 m
-                        RedisGeoCommands.GeoSearchCommandArgs.newGeoSearchArgs().includeDistance().limit(end));
+                        RedisGeoCommands.GeoSearchCommandArgs.newGeoSearchArgs().includeDistance().limit(end)); //传递搜索参数，includeCoordinates返回结果带上距离，limit查询的最终值（0，end）
         // 4.解析出id
         if (results == null) {
             return Result.ok(Collections.emptyList());
