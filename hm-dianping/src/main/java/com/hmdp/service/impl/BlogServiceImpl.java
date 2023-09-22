@@ -195,10 +195,14 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
         // 1.获取当前用户
         Long userId = UserHolder.getUser().getId();
 
-        // 2.查询收件箱， ZREVRANGEBYSCORE KEY MAX MIN LIMIT OFFSET COUNT
+        /* 2.查询收件箱(根据分数降序排序)， ZREVRANGEBYSCORE KEY MAX MIN LIMIT OFFSET COUNT
+         *   min：0 表示最小时间戳数据
+         *   max：  当前时间戳 | 上次查询的最小时间戳
+         *   offset：偏移量, 0 | 在上一次结果中，与最小值一样的元素的个数
+         */
         String key = FACE_USERID_KEY + userId;
         Set<ZSetOperations.TypedTuple<String>> typedTuples = stringRedisTemplate.opsForZSet()
-                .reverseRangeByScoreWithScores(key, 0, max, offset, 3);
+                .reverseRangeByScoreWithScores(key, 0, max, offset, 2);
         // 3.非空判断
         if (typedTuples == null || typedTuples.isEmpty()) {
             return Result.ok();
