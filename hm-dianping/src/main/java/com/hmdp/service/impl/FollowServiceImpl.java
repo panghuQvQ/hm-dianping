@@ -62,7 +62,7 @@ public class FollowServiceImpl extends ServiceImpl<FollowMapper, Follow> impleme
                     .eq(Follow::getFollowUserId, followUserId));
             // 把关注用户的id 从Redis集合中移除
             if (isRemoveSuccess) {
-                stringRedisTemplate.opsForSet().remove(key, followUserId);
+                stringRedisTemplate.opsForSet().remove(key, followUserId.toString());
             }
 
         }
